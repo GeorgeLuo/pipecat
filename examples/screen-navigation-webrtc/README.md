@@ -39,3 +39,10 @@ transcript of each utterance and any detected commands.
 - Python 3.10+
 - A modern browser with WebRTC support
 - A Deepgram API key
+
+## Build and test the Docker image
+
+```bash
+docker build -t screen-navigation-webrtc .
+docker run --env-file server/.env -p 7860:7860 screen-navigation-webrtc
+```
