@@ -13,4 +13,4 @@ COPY server ./server
 
 EXPOSE 7860
 
-CMD ["python", "server/server.py"]
+CMD ["python", "server/server.py", "--host", "0.0.0.0"]
