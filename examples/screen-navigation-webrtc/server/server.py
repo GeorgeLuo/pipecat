@@ -12,9 +12,18 @@ from loguru import logger
 
 from pipecat.transports.network.webrtc_connection import IceServer, SmallWebRTCConnection
 
+from fastapi.middleware.cors import CORSMiddleware
+
 load_dotenv(override=True)
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],           # or restrict to your dev host(s)
+    allow_methods=["POST", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 pcs_map: Dict[str, SmallWebRTCConnection] = {}
 
