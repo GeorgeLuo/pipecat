@@ -23,14 +23,14 @@ service (Deepgram in this demo) and simple patterns are matched to emit commands
    cp server/env.example server/.env
    ```
    Edit `.env` and add your Deepgram API key.
-4. Run the server
+4. Run the server (listening on all interfaces)
    ```bash
-   python server/server.py
+   python server/server.py --host 0.0.0.0
    ```
 
 ### 2. Connect from a browser
 
-Open `http://localhost:7860` and allow microphone access. Speak commands like
+Open `http://localhost:7860` (replace `localhost` with your host IP if running remotely) and allow microphone access. Speak commands like
 "scroll down" or "click search box". The server sends back JSON messages with the
 transcript of each utterance and any detected commands.
 
@@ -41,6 +41,8 @@ transcript of each utterance and any detected commands.
 - A Deepgram API key
 
 ## Build and test the Docker image
+
+The Docker image listens on `0.0.0.0:7860` and exposes port `7860`.
 
 ```bash
 docker build -t screen-navigation-webrtc .
