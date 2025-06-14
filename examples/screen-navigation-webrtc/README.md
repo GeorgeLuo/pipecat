@@ -28,16 +28,16 @@ service (Deepgram in this demo) and simple patterns are matched to emit commands
    python server/server.py --host 0.0.0.0
    ```
 
-### 2. Connect from a browser
+### 2. Connect with your own WebRTC client
 
-Open `http://localhost:7860` (replace `localhost` with your host IP if running remotely) and allow microphone access. Speak commands like
-"scroll down" or "click search box". The server sends back JSON messages with the
-transcript of each utterance and any detected commands.
+Use a custom WebRTC client to exchange SDP with the server's `/api/offer` endpoint.
+Once connected, audio will stream to the server and JSON messages containing
+transcripts and detected commands are sent back over the data channel.
 
 ## Requirements
 
 - Python 3.10+
-- A modern browser with WebRTC support
+- A WebRTC-capable client (browser or custom application)
 - A Deepgram API key
 
 ## Build and test the Docker image
