@@ -8,9 +8,7 @@ import uvicorn
 from bot import run_bot
 from dotenv import load_dotenv
 from fastapi import BackgroundTasks, FastAPI
-from fastapi.responses import RedirectResponse
 from loguru import logger
-from pipecat_ai_small_webrtc_prebuilt.frontend import SmallWebRTCPrebuiltUI
 
 from pipecat.transports.network.webrtc_connection import IceServer, SmallWebRTCConnection
 
@@ -21,13 +19,6 @@ app = FastAPI()
 pcs_map: Dict[str, SmallWebRTCConnection] = {}
 
 ice_servers = [IceServer(urls="stun:stun.l.google.com:19302")]
-
-app.mount("/prebuilt", SmallWebRTCPrebuiltUI)
-
-
-@app.get("/", include_in_schema=False)
-async def root_redirect():
-    return RedirectResponse(url="/prebuilt/")
 
 
 @app.post("/api/offer")
@@ -67,8 +58,12 @@ async def lifespan(app: FastAPI):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Screen navigation demo")
-    parser.add_argument("--host", default="localhost", help="Host for HTTP server (default: localhost)")
-    parser.add_argument("--port", type=int, default=7860, help="Port for HTTP server (default: 7860)")
+    parser.add_argument(
+        "--host", default="localhost", help="Host for HTTP server (default: localhost)"
+    )
+    parser.add_argument(
+        "--port", type=int, default=7860, help="Port for HTTP server (default: 7860)"
+    )
     parser.add_argument("--verbose", "-v", action="count")
     args = parser.parse_args()
 
