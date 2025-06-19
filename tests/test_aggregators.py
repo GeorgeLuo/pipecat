@@ -16,6 +16,7 @@ from pipecat.frames.frames import (
 )
 from pipecat.processors.aggregators.gated import GatedAggregator
 from pipecat.processors.aggregators.sentence import SentenceAggregator
+from pipecat.processors.aggregators.json_sentence import JSONSentenceAggregator
 from pipecat.tests.utils import run_test
 
 
@@ -74,3 +75,47 @@ class TestGatedAggregator(unittest.IsolatedAsyncioTestCase):
             frames_to_send=frames_to_send,
             expected_down_frames=expected_down_frames,
         )
+
+
+class TestJSONSentenceAggregator(unittest.IsolatedAsyncioTestCase):
+    async def test_json_detection(self):
+        aggregator = JSONSentenceAggregator()
+
+        frames_to_send = [
+            TextFrame("{"),
+            TextFrame('"kind": "need",'),
+            TextFrame(' "id": "123"'),
+            TextFrame("}"),
+        ]
+
+        expected_down_frames = [TextFrame]
+
+        (received_down, _) = await run_test(
+            aggregator,
+            frames_to_send=frames_to_send,
+            expected_down_frames=expected_down_frames,
+        )
+
+        assert received_down[0].text == '{"kind": "need", "id": "123"}'
+
+    async def test_sentence_and_json(self):
+        aggregator = JSONSentenceAggregator()
+
+        frames_to_send = [
+            TextFrame("Hello world."),
+            TextFrame(" {"),
+            TextFrame('"kind": "need"'),
+            TextFrame(', "id": "1"'),
+            TextFrame("}"),
+        ]
+
+        expected_down_frames = [TextFrame, TextFrame]
+
+        (received_down, _) = await run_test(
+            aggregator,
+            frames_to_send=frames_to_send,
+            expected_down_frames=expected_down_frames,
+        )
+
+        assert received_down[0].text == "Hello world."
+        assert received_down[1].text == '{"kind": "need", "id": "1"}'

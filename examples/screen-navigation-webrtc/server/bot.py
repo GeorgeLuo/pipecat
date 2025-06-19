@@ -15,7 +15,7 @@ from pipecat.pipeline.runner import PipelineRunner
 from pipecat.pipeline.task import PipelineParams, PipelineTask
 from pipecat.processors.transcript_processor import TranscriptProcessor
 from pipecat.processors.aggregators.openai_llm_context import OpenAILLMContext
-from pipecat.processors.aggregators.sentence import SentenceAggregator
+from json_sentence_aggregator import JSONSentenceAggregator
 from pipecat.processors.frame_processor import FrameDirection, FrameProcessor
 from pipecat.services.deepgram.stt import DeepgramSTTService
 from pipecat.services.openai.llm import OpenAILLMService
@@ -95,7 +95,7 @@ async def run_bot(webrtc_connection):
     context = OpenAILLMContext([{"role": "system", "content": SYSTEM_PROMPT}])
     context_aggregator = llm.create_context_aggregator(context)
 
-    sentence_agg = SentenceAggregator()
+    sentence_agg = JSONSentenceAggregator()
     llm_handler = LLMOutputHandler(transport)
 
     pipeline = Pipeline(
