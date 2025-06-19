@@ -116,6 +116,20 @@ async def run_bot(webrtc_connection):
         params=PipelineParams(allow_interruptions=False),
     )
 
+    system_manifest_received = False
+
+    @transport.event_handler("on_app_message")
+    async def on_app_message(transport, message):
+        nonlocal system_manifest_received
+        if (
+            isinstance(message, dict)
+            and message.get("role") == "system"
+            and not system_manifest_received
+        ):
+            logger.debug("Received system manifest from client")
+            context.add_message({"role": "system", "content": message.get("content", "")})
+            system_manifest_received = True
+
     @transcript.event_handler("on_transcript_update")
     async def on_transcript_update(processor, frame):
         for msg in frame.messages:
