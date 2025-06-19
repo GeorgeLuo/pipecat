@@ -35,6 +35,10 @@ service (Deepgram in this demo) and simple patterns are matched to emit commands
 Use a custom WebRTC client to exchange SDP with the server's `/api/offer` endpoint.
 Once connected, audio will stream to the server and JSON messages containing
 transcripts and detected commands are sent back over the data channel.
+Before the connection is fully established, your client can send a JSON object
+with `{"role": "system", "content": "..."}` to provide an initial manifest for
+the LLM conversation. This message is appended to the conversation history
+before any user input is processed.
 
 ## Requirements
 
