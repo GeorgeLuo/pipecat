@@ -22,7 +22,9 @@ service (Deepgram in this demo) and simple patterns are matched to emit commands
    ```bash
    cp server/env.example server/.env
    ```
-   Edit `.env` and add your Deepgram API key.
+   Edit `.env` and add your API keys. At minimum set `DEEPGRAM_API_KEY`
+   and `OPENAI_API_KEY`. You can also override `OPENAI_MODEL` or
+   `SYSTEM_PROMPT_FILE` if desired.
 4. Run the server (listening on all interfaces)
    ```bash
    python server/server.py --host 0.0.0.0
@@ -39,6 +41,7 @@ transcripts and detected commands are sent back over the data channel.
 - Python 3.10+
 - A WebRTC-capable client (browser or custom application)
 - A Deepgram API key
+- An OpenAI API key
 
 ## Build and test the Docker image
 
