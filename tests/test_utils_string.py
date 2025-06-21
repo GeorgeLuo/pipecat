@@ -27,14 +27,16 @@ class TestUtilsString(unittest.IsolatedAsyncioTestCase):
         assert match_endofsentence("The number pi is 3.14159.") == 25
         assert match_endofsentence("Valid scientific notation 1.23e4.") == 33
         assert match_endofsentence("Valid scientific notation 0.e4.") == 31
+        assert match_endofsentence("The year is 2025.") == 17
+        assert match_endofsentence("Value 0.e4.") == 11
         assert not match_endofsentence("This is not a sentence")
         assert not match_endofsentence("This is not a sentence,")
         assert not match_endofsentence("This is not a sentence, ")
         assert not match_endofsentence("Ok, Mr. Smith let's ")
         assert not match_endofsentence("Dr. Walker, I presume ")
         assert not match_endofsentence("Prof. Walker, I presume ")
-        assert not match_endofsentence("zweitens, und 3.")
-        assert not match_endofsentence("Heute ist Dienstag, der 3.")  # 3. Juli 2024
+        assert match_endofsentence("zweitens, und 3.") == 16
+        assert match_endofsentence("Heute ist Dienstag, der 3.") == 26  # 3. Juli 2024
         assert not match_endofsentence("America, or the U.")  # U.S.A.
         assert not match_endofsentence("It still early, it's 3:00 a.")  # 3:00 a.m.
         assert not match_endofsentence("My emails are foo@pipecat.ai and bar@pipecat.ai")
