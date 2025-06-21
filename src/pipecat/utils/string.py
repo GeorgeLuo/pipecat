@@ -76,6 +76,8 @@ def match_endofsentence(text: str) -> int:
     # Replace number dots by ampersands so we can find the end of sentence.
     numbers = list(NUMBER_PATTERN.finditer(text))
     for number_match in numbers:
+        if number_match.group().endswith("."):
+            continue
         text = replace_match(text, number_match, ".", "&")
 
     # Match against the new text.
